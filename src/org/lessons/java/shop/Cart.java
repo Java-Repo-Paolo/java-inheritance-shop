@@ -1,98 +1,113 @@
 package org.lessons.java.shop;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Cart {
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
-        Smartphone[] smartphone = new Smartphone[6];
+        System.out.println("How many products? ");
+        int cartSize = Integer.parseInt(scanner.nextLine());
+        Product[] cart = new Product[cartSize];
 
-        smartphone[0] = new Smartphone(
-            "Realme 9 5G",
-            "Realme phone",
-            239.90 ,
-            0.22,
-            "64 GB"
-        );
-        smartphone[1] = new Smartphone(
-            "Realme 9 Pro Plus 5G",
-            "Realme phone",
-            289.90 ,
-            0.22,
-            "128 GB"
-        );
-        smartphone[2] = new Smartphone(
-            "Realme GT 5G",
-            "Realme phone",
-            329.90 ,
-            0.22,
-            "128 GB"
-        );
-        /*smartphone[3] = new Smartphone(
-            "Realme GT Pro Plus 5G", "Realme phone",389.90 , 0.22, "128 GB")
-        ;
-        smartphone[4] = new Smartphone(
-            "Realme GT2 5G", "Realme phone",439.90 , 0.22, "128 GB"
-        );
-        smartphone[5] = new Smartphone(
-            "Realme GT2 Pro 5G", "Realme phone",489.90 , 0.22, "128 GB"
-        );*/
+        for (int i = 0; i < cart.length ; i++) {
+            System.out.println("Insert product " + (i + 1));
 
+            boolean quit;
 
-        Television[] Television = new Television[6];
+            do {
+                //Chiedere quale tipologia di prodotto sceglie il cliente
+                System.out.println("Choose an type of product: ");
+                System.out.println("1 - Smartphones");
+                System.out.println("2 - Televisions");
+                System.out.println("3 - Headphones");
+                System.out.println("4 - Exit");
 
-        Television[0] = new Television(
-            "Samsung - Smart TV",
-            "Samsung television with SmartTV included",
-            599.00,
-            0.22,
-            "45 pollici",
-            true
-        );
-        Television[1] = new Television(
-            "Samsung 4K",
-            "Samsung television with maximum 4K resolution",
-            799.00,
-            0.22,
-            "45 pollici",
-            false
-        );
-        Television[3] = new Television(
-            "Samsung 8K",
-            "Samsung television with maximum 8K resolution",
-            799.00,
-            0.22,
-            "45 pollici",
-            false
-        );
+                System.out.println("Write the chosen option: ");
+                String choseProduct = scanner.nextLine();
+                switch (choseProduct){
+                    case "1":
+                        System.out.println("Enter your smartphone data");
+                        quit = false;
+                        System.out.println("Smartphones - name: ");
+                        String namePhone = scanner.nextLine();
+                        System.out.println("Smartphones - description: ");
+                        String descriptionPhone = scanner.nextLine();
+                        System.out.println("Smartphones - memory: ");
+                        String memoryPhone = scanner.nextLine();
+                        System.out.println("Smartphones - price: ");
+                        String pricePhone = scanner.nextLine();
+                        System.out.println("Smartphones - Iva: ");
+                        String ivaPhone = scanner.nextLine();
+                        Smartphone smartphone = new Smartphone(
+                                namePhone,
+                                descriptionPhone,
+                                new BigDecimal(pricePhone),
+                                new BigDecimal(ivaPhone),
+                                memoryPhone
+                        );
+                        cart[i] = smartphone;
+                        break;
+                    case "2":
+                        System.out.println("Enter your television data");
+                        quit = false;
+                        System.out.println("Television - name: ");
+                        String nameTelevision = scanner.nextLine();
+                        System.out.println("Television - description: ");
+                        String descriptionTelevision = scanner.nextLine();
+                        System.out.println("Television - dimension of TV: ");
+                        int dimensionsTV = Integer.parseInt(scanner.nextLine());
+                        System.out.println("Television - price: ");
+                        String priceTelevision = scanner.nextLine();
+                        System.out.println("Television - Iva: ");
+                        String ivaTV = scanner.nextLine();
+                        System.out.println("Smart? yes/no");
+                        boolean isSmartTV = scanner.nextLine().equalsIgnoreCase("yes");
 
-        //Chidere quale tipologia di prodotto sceglie il cliente
+                        Television television = new Television(
+                                nameTelevision,
+                                descriptionTelevision,
+                                new BigDecimal(priceTelevision),
+                                new BigDecimal(ivaTV),
+                                dimensionsTV,
+                                isSmartTV);
+                        cart[i] = television;
+                        break;
+                    /*case "3":
 
+                        System.out.println("Enter your Headphone data: ");
+                        quit = false;
+                        String nameHPhone = scanner.nextLine();
+                        String descriptionHPhone = scanner.nextLine();
+                        double priceHPhone = scanner.nextDouble();
+                        double ivaHPhone = scanner.nextDouble();
 
-        boolean quit = false;
-        while(!quit){
-            System.out.println("Choose an type of product: ");
-            System.out.println("1 - Smartphones");
-            System.out.println("2 - Televisions");
-            System.out.println("3 - Headphones");
-            System.out.println("4 - Exit");
-
-            System.out.println("Write the chosen option: ");
-            int choseProduct = scanner.nextInt();
-
-            switch (choseProduct){
-                case 1:
-                    for (int i = 0; i < smartphone.length; i++) {
-                        System.out.println("Choose one smartphone: ");
-                        System.out.println("1 - Realme 9 5G");
-                        System.out.println("2 - Realme 9 Pro Plus 5G");
-                        System.out.println("3 - Realme phone");
-                        System.out.println("4 - Exit");
-                    }
+                        products[productIndex] = new Headphone(nameHPhone, descriptionHPhone, priceHPhone, ivaHPhone);
+                        productIndex++;
+                    break;*/
+                    default:
+                        System.out.println("Invalid choice");
+                        quit = true;
                     break;
+                }
             }
+            while(quit);
         }
 
+        System.out.println(
+                "\n" +
+                        "Cart with your products: " +
+                        "\n"
+        );
+        // Stampa il riepilogo dei dati inseriti
+        BigDecimal total = new BigDecimal(0);
+        for (Product p : cart) {
+            System.out.println(p);
+            //aggiorno il totale
+            total = total.add(p.getFullPrice());
+        }
+        System.out.println("Total: " + total + "€");
+        scanner.close();
     }
 }

@@ -10,11 +10,11 @@ public class Product {
     private String name;
     private String description;
     //private double price;
-    private double price;
-    private double iva;
+    private BigDecimal price;
+    private BigDecimal iva;
 
     //Costruttori
-    public Product(String name, String description, double price, double iva){
+    public Product(String name, String description, BigDecimal price, BigDecimal iva){
         this.code = generateCode();
         this.name = name;
         this.description = description;
@@ -49,18 +49,18 @@ public class Product {
     }
 
     //Prezzo
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
-    public void setPrice(double price){
+    public void setPrice(BigDecimal price){
         this.price = price;
     }
 
     //Iva
-    public double getIva() {
+    public BigDecimal getIva() {
         return iva;
     }
-    public void setIva(double iva) {
+    public void setIva(BigDecimal iva) {
         this.iva = iva;
     }
 
@@ -72,15 +72,28 @@ public class Product {
         return random.nextInt(1, 100000);
     }
     // Metodo - prezzo + iva
-    public double getFullPrice() {
-        // prezzo base + prezzo base * iva
-        return price = price  + (price * iva);
+    public BigDecimal getFullPrice() {
+        //prezzo base + prezzo base * iva
+        return price.add(price.multiply(iva)).setScale(2, RoundingMode.HALF_EVEN);
     }
     // Metodo - nome + codice
     public String getFullName() {
         return name + " - " + code;
     }
 
+    @Override
+    public String toString() {
+        return "Product{" +
+                "code = " + code +
+                ", name = '" + name + '\'' +
+                ", description = '" + description + '\'' +
+                ", price = " + price +
+                ", vat = " + iva +
+                '}';
+    }
+
 }
+
+
 
 
